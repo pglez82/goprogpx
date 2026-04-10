@@ -274,15 +274,15 @@ function App() {
           <div className="video-preview">
             <div className="metadata-row">
               <div>
-                <p className="label">Video file</p>
+                <p className="label">Archivo Video</p>
                 <p className="file-name">{fileName}</p>
               </div>
               <div>
-                <p className="label">Relative time</p>
+                <p className="label">Tiempo relativo</p>
                 <p className="status-chip">{relativeLabel}</p>
               </div>
               <div>
-                <p className="label">Estimated timestamp</p>
+                <p className="label">Timestamp estimado</p>
                 <p className="status-chip">{timestampLabel}</p>
               </div>
             </div>
@@ -305,22 +305,22 @@ function App() {
                 {nearestPoint ? (
                   <div className="coordinate-card">
                     <p className="label">Nearest GPX point</p>
-                    <p>Latitude: {nearestPoint.lat.toFixed(6)}</p>
-                    <p>Longitude: {nearestPoint.lon.toFixed(6)}</p>
+                    <p>Latitud: {nearestPoint.lat.toFixed(6)}</p>
+                    <p>Longitud: {nearestPoint.lon.toFixed(6)}</p>
                     <p>GPX timestamp: {formatTimestamp(nearestPoint.time)}</p>
                     <p>Δ: {(nearestPoint.distanceMs / 1000).toFixed(2)} sec</p>
                   </div>
                 ) : (
-                  <p className="placeholder">Coordinates not found.</p>
+                  <p className="placeholder">Coordenadas no encontradas.</p>
                 )}
               </div>
             ) : (
-              <p className="placeholder">Load a GPX file to match coordinates to the current timestamp.</p>
+              <p className="placeholder">Carga un GPX para cuadrarlo con los timestamps del video y sacar las localizaciones.</p>
             )}
 
             {nearestPoint && (
               <div className="tag-section">
-                <h3>Tag Current Point</h3>
+                <h3>Etiqueta el frame actual</h3>
                 <div className="input-row">
                   <input
                     type="text"
@@ -341,7 +341,7 @@ function App() {
 
             {taggedPoints.length > 0 && (
               <div className="tagged-points">
-                <h3>Tagged Points</h3>
+                <h3>Frames etiquetados</h3>
                 <ul>
                   {taggedPoints.map((point, index) => (
                     <li key={point.timestamp.getTime()} className="point-item">
@@ -366,7 +366,7 @@ function App() {
       </section>
 
       <footer className="footer">
-        <p>Creada por <strong>Pablo González</strong> | Ideada por <strong>Fernando Álvarez</strong></p>
+        <p>Creada por <strong>Pablo González (Uniovi)</strong> | Ideada por <strong>Fernando García (IEO)</strong></p>
         <p>Universidad de Oviedo & Instituto Español de Oceanografía</p>
       </footer>
     </main>
