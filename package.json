@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && touch dist/.nojekyll && echo -e 'plugins: []\nexclude: []\ninclude: [\"*\"]\n' > dist/_config.yml",
+    "build": "vite build && touch dist/.nojekyll",
     "preview": "vite preview",
     "deploy": "npm run build && gh-pages -d dist --dotfiles"
   },
