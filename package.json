@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && touch dist/.nojekyll && echo -e 'plugins: []\nexclude: []\ninclude: [\"*\"]\n' > dist/_config.yml",
     "preview": "vite preview",
-    "deploy": "npm run build && gh-pages -d dist"
+    "deploy": "npm run build && gh-pages -d dist --dotfiles"
   },
   "dependencies": {
     "gpmf-extract": "^0.3.3",

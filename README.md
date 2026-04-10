@@ -20,8 +20,8 @@ Aplicación web para previsualizar videos de GoPro y sincronizarlos con datos GP
 
 1. Clona el repositorio:
    ```bash
-   git clone https://github.com/tu-usuario/videogpx.git
-   cd videogpx
+   git clone https://github.com/pglez82/goprogpx.git
+   cd goprogpx
    ```
 
 2. Instala las dependencias:
@@ -40,7 +40,7 @@ Aplicación web para previsualizar videos de GoPro y sincronizarlos con datos GP
 
 El proyecto está configurado para desplegarse automáticamente en GitHub Pages usando GitHub Actions.
 
-1. Sube el código a un repositorio de GitHub llamado `videogpx`.
+1. Sube el código a un repositorio de GitHub llamado `goprogpx`.
 2. Ve a Settings > Pages y selecciona "GitHub Actions" como source.
 3. El workflow se ejecutará automáticamente en cada push a la rama main.
 
