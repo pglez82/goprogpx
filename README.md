@@ -47,7 +47,7 @@ El proyecto está configurado para desplegarse automáticamente en GitHub Pages 
 ## Créditos
 
 - **Creado por**: Pablo González
-- **Ideado por**: Fernando Álvarez
+- **Ideado por**: Fernando García
 - **Instituciones**: Universidad de Oviedo & Instituto Español de Oceanografía
 
 ## Licencia
