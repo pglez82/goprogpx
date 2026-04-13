@@ -5,15 +5,13 @@ Aplicación web para previsualizar videos de GoPro y sincronizarlos con datos GP
 ## Características
 
 - **Previsualización local**: Los videos se reproducen directamente en el navegador sin subirlos a ningún servidor.
-- **Extracción de metadatos**: Utiliza la librería `gpmf-extract` para obtener el timestamp exacto del video desde los metadatos GPMF de GoPro.
-- **Sincronización GPS**: Carga archivos GPX y sincroniza las coordenadas GPS con el tiempo del video.
+- **Sincronización GPS simplificada**: Carga archivos GPX y usa el timestamp del primer punto GPX como referencia temporal del video. El resto de coordenadas se sincroniza automáticamente.
 - **Etiquetado de puntos**: Permite etiquetar frames específicos con texto y valores numéricos, asociándolos con coordenadas GPS.
 - **Exportación CSV**: Exporta los puntos etiquetados a un archivo CSV para análisis posterior.
 
 ## Tecnologías utilizadas
 
 - **React + Vite**: Framework frontend moderno y rápido.
-- **gpmf-extract**: Librería para extraer metadatos GPMF de videos GoPro.
 - **DOMParser**: Para parsear archivos GPX XML.
 
 ## Instalación y uso
