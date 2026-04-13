@@ -2,40 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import logoUO from '/logo-uo.png';
 import logoIEO from '/logo-ieo.png';
 
-const loadGpmfExtract = async () => {
-  const module = await import('gpmf-extract');
-  return module.default ?? module.GPMFExtract ?? module;
-};
-
-const extractGpmfTimestamp = async (file) => {
-  try {
-    const GPMFExtract = await loadGpmfExtract();
-    const result = await GPMFExtract(file, { browserMode: true, useWorker: true });
-    console.log(result);
-    return result?.timing?.start ?? null;
-    
-  } catch (error) {
-    console.warn('GPMF extraction failed:', error);
-    return null;
-  }
-};
-
-const parseVideoStartTime = (fileName, lastModified) => {
-  const candidates = [
-    /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/, // 20241001103408
-    /(\d{4})-(\d{2})-(\d{2})[ _](\d{2})\.(\d{2})\.(\d{2})/, // 2024-10-01 10.34.08
-  ];
-
-  for (const pattern of candidates) {
-    const match = fileName.match(pattern);
-    if (!match) continue;
-    const [, year, month, day, hour, minute, second] = match;
-    return new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}`);
-  }
-
-  return lastModified ? new Date(lastModified) : null;
-};
-
 const formatSeconds = (seconds) => {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
@@ -110,7 +76,6 @@ function App() {
   const [taggedPoints, setTaggedPoints] = useState([]);
   const [etiqueta, setEtiqueta] = useState('');
   const [cobertura, setCobertura] = useState('');
-  const [isLoadingTimestamp, setIsLoadingTimestamp] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -123,7 +88,7 @@ function App() {
   const updatePosition = (currentSeconds) => {
     setRelativeLabel(formatSeconds(currentSeconds));
 
-    if (isLoadingTimestamp || !videoStartTime) {
+    if (!videoStartTime) {
       return;
     }
 
@@ -151,24 +116,8 @@ function App() {
     setFileName(file.name);
     setRelativeLabel('00:00:00.000');
     setNearestPoint(null);
-    setIsLoadingTimestamp(true);
-    setTimestampLabel('Loading...');
-
-    const parseFile = async () => {
-      const gpmfTime = await extractGpmfTimestamp(file);
-      setIsLoadingTimestamp(false);
-      if (gpmfTime) {
-        setVideoStartTime(gpmfTime);
-        setTimestampLabel(formatTimestamp(gpmfTime));
-        if (videoRef.current) {
-          updatePosition(videoRef.current.currentTime);
-        }
-      } else {
-        setTimestampLabel('Unknown start time');
-      }
-    };
-
-    parseFile();
+    setTimestampLabel('Waiting for GPX file...');
+    setVideoStartTime(null);
   };
 
   const handleGpxFileChange = async (event) => {
@@ -182,8 +131,14 @@ function App() {
     setGpxFileName(file.name);
     setNearestPoint(null);
 
-    if (videoRef.current?.currentTime && points.length > 0 && videoStartTime) {
-      updatePosition(videoRef.current.currentTime);
+    // Set video start time to the first GPX point's timestamp
+    if (points.length > 0) {
+      const firstPointTime = points[0].time;
+      setVideoStartTime(firstPointTime);
+      if (videoRef.current) {
+        setTimestampLabel(formatTimestamp(firstPointTime));
+        updatePosition(videoRef.current.currentTime);
+      }
     }
   };
 
@@ -250,10 +205,10 @@ function App() {
 
       <section className="card">
         <h2>Seleccionar Archivos</h2>
-        <p>Selecciona un video de GoPro y un archivo GPX para sincronizar coordenadas GPS con el tiempo del video.</p>
+        <p>Selecciona un video y un archivo GPX para sincronizar coordenadas GPS con el tiempo del video.</p>
 
         <label className="file-label">
-          <span>Seleccionar video de GoPro</span>
+          <span>Seleccionar video</span>
           <input
             type="file"
             accept="video/mp4,video/*"
@@ -311,7 +266,7 @@ function App() {
                     <p>Δ: {(nearestPoint.distanceMs / 1000).toFixed(2)} sec</p>
                   </div>
                 ) : (
-                  <p className="placeholder">Coordenadas no encontradas.</p>
+                  <p className="placeholder">Coordenadas no encontradas ( Δ &gt; 10seg.).</p>
                 )}
               </div>
             ) : (
